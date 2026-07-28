@@ -1,1 +1,75 @@
-<h1>USCities Search Mini Project - coming soon</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USCities Search</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #searchInput {
+      width: 70%;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #eee;
+    }
+
+    #message {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>USCities Search — EECE/CS 3093C Lab 4</h1>
+  <p>By Aziza Alimova</p>
+
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Enter city name or ZIP code"
+  >
+
+  <button id="searchButton">Search</button>
+
+  <div id="message"></div>
+  <div id="responses"></div>
+
+  <script src="client.js"></script>
+
+</body>
+</html>
