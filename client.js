@@ -5,14 +5,17 @@ const searchButton = document.getElementById("searchButton");
 const responses = document.getElementById("responses");
 const message = document.getElementById("message");
 
-async function search() {
-  const query = searchInput.value.trim();
+let debounceTimer;
+let inputVersion = 0;
 
+async function search(query = searchInput.value.trim(), version = ++inputVersion) {
   if (!query) {
     responses.innerHTML = "";
     message.textContent = "Please enter a city or ZIP code.";
     return;
   }
+
+  console.log(`Debug>query: ${query}`);
 
   try {
     message.textContent = "Searching...";
@@ -27,9 +30,15 @@ async function search() {
 
     const data = await response.json();
 
+    // Ignore results from an older search
+    if (version !== inputVersion) return;
+
     displaySearch(data);
     message.textContent = "";
+
   } catch (error) {
+    if (version !== inputVersion) return;
+
     console.error(error);
     responses.innerHTML = "";
     message.textContent = "Error: could not load results.";
@@ -62,10 +71,32 @@ function displaySearch(data) {
   `;
 }
 
-searchButton.addEventListener("click", search);
+searchButton.addEventListener("click", function() {
+  clearTimeout(debounceTimer);
+  search();
+});
 
-searchInput.addEventListener("keydown", function(event) {
+searchInput.addEventListener("keyup", function(event) {
   if (event.key === "Enter") {
+    clearTimeout(debounceTimer);
     search();
+    return;
   }
+
+  clearTimeout(debounceTimer);
+
+  inputVersion++;
+  const version = inputVersion;
+  const query = searchInput.value.trim();
+
+  if (query.length < 2) {
+    responses.innerHTML = "";
+    message.textContent =
+      query.length === 0 ? "" : "Type at least 2 characters.";
+    return;
+  }
+
+  debounceTimer = setTimeout(function() {
+    search(query, version);
+  }, 300);
 });
